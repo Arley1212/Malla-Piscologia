@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Malla Psicología UST</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9fb;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #6a5acd;
+    }
+    .malla {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .año {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 15px;
+      width: 280px;
+    }
+    .año h2 {
+      text-align: center;
+      color: #5f67c2;
+    }
+    .materia {
+      background: #e0e7ff;
+      border-radius: 6px;
+      padding: 8px;
+      margin: 6px 0;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.3s ease;
+    }
+    .materia:hover {
+      background: #c7d2fe;
+    }
+    .materia.aprobada {
+      background: #b2f2bb;
+      text-decoration: line-through;
+    }
+    .materia.bloqueada {
+      background: #f5f5f5;
+      color: #aaa;
+      cursor: not-allowed;
+    }
+    .materia[title]::after {
+      content: attr(title);
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      background: #333;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+    }
+    .materia:hover::after {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+<h1>Malla Curricular Psicología UST</h1>
+<div class="malla" id="malla"></div>
+
+<script>
+const materias = [
+  { nombre: "Fundamentos de la psicología", id: "fundamentos" },
+  { nombre: "Psicología del Desarrollo I", id: "desarrollo1" },
+  { nombre: "Antropología social", id: "antropologia" },
+  { nombre: "Taller de competencias Comunicativas", id: "comunicacion" },
+  { nombre: "Taller de competencias para el Aprendizaje", id: "aprendizaje" },
+  { nombre: "Taller Resolución de conflictos", id: "conflictos" },
+  { nombre: "Autoconocimiento", id: "autoconocimiento" },
+
+  { nombre: "Psicobiología", id: "psicobiologia" },
+  { nombre: "Psicología del Desarrollo II", id: "desarrollo2", requiere: ["desarrollo1"] },
+  { nombre: "Teorías Cognitivas", id: "cognitivas" },
+  { nombre: "Teorías Psicoanalíticas", id: "psicoanaliticas" },
+  { nombre: "Pensamiento Matemático para Ciencias Sociales", id: "matematico" },
+  { nombre: "Taller Desarrollo de la creatividad", id: "creatividad" },
+  { nombre: "Relaciones Humanas", id: "relaciones" },
+  // Continuar el resto por bloques de semestre más adelante...
+];
+
+const años = [
+  { titulo: "1° Año - Semestre 1", materias: ["fundamentos", "desarrollo1", "antropologia", "comunicacion", "aprendizaje", "conflictos", "autoconocimiento"] },
+  { titulo: "1° Año - Semestre 2", materias: ["psicobiologia", "desarrollo2", "cognitivas", "psicoanaliticas", "matematico", "creatividad", "relaciones"] },
+];
+
+const progreso = JSON.parse(localStorage.getItem("materiasAprobadas") || "[]");
+
+function guardarProgreso() {
+  localStorage.setItem("materiasAprobadas", JSON.stringify(progreso));
+}
+
+function crearMalla() {
+  const container = document.getElementById("malla");
+  años.forEach((año) => {
+    const divAño = document.createElement("div");
+    divAño.className = "año";
+    const h2 = document.createElement("h2");
+    h2.textContent = año.titulo;
+    divAño.appendChild(h2);
+
+    año.materias.forEach(id => {
+      const materia = materias.find(m => m.id === id);
+      const div = document.createElement("div");
+      div.className = "materia";
+      div.textContent = materia.nombre;
+      div.dataset.id = materia.id;
+
+      const aprobada = progreso.includes(materia.id);
+      const requisitosCumplidos = !materia.requiere || materia.requiere.every(r => progreso.includes(r));
+
+      if (!requisitosCumplidos) {
+        div.classList.add("bloqueada");
+        const faltantes = materia.requiere.filter(r => !progreso.includes(r)).map(rid => {
+          const req = materias.find(m => m.id === rid);
+          return req ? req.nombre : rid;
+        });
+        div.title = "Requiere: " + faltantes.join(", ");
+      } else {
+        div.addEventListener("click", () => {
+          if (div.classList.contains("aprobada")) {
+            div.classList.remove("aprobada");
+            const i = progreso.indexOf(materia.id);
+            if (i >= 0) progreso.splice(i, 1);
+          } else {
+            div.classList.add("aprobada");
+            progreso.push(materia.id);
+          }
+          guardarProgreso();
+          location.reload();
+        });
+      }
+
+      if (aprobada) div.classList.add("aprobada");
+
+      divAño.appendChild(div);
+    });
+
+    container.appendChild(divAño);
+  });
+}
+
+crearMalla();
+</script>
+</body>
+</html>
