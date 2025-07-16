@@ -76,7 +76,6 @@
 <body>
 <h1>Malla Curricular Psicología UST</h1>
 <div class="malla" id="malla"></div>
-
 <script>
 const materias = [
   { nombre: "Fundamentos de la psicología", id: "fundamentos" },
@@ -86,7 +85,6 @@ const materias = [
   { nombre: "Taller de competencias para el Aprendizaje", id: "aprendizaje" },
   { nombre: "Taller Resolución de conflictos", id: "conflictos" },
   { nombre: "Autoconocimiento", id: "autoconocimiento" },
-
   { nombre: "Psicobiología", id: "psicobiologia" },
   { nombre: "Psicología del Desarrollo II", id: "desarrollo2", requiere: ["desarrollo1"] },
   { nombre: "Teorías Cognitivas", id: "cognitivas" },
@@ -94,12 +92,60 @@ const materias = [
   { nombre: "Pensamiento Matemático para Ciencias Sociales", id: "matematico" },
   { nombre: "Taller Desarrollo de la creatividad", id: "creatividad" },
   { nombre: "Relaciones Humanas", id: "relaciones" },
-  // Continuar el resto por bloques de semestre más adelante...
+  { nombre: "Procesos Neuropsicológicos I", id: "neuro1", requiere: ["psicobiologia"] },
+  { nombre: "Psicología de la Personalidad", id: "personalidad" },
+  { nombre: "Teorías Humanistas", id: "humanistas" },
+  { nombre: "Teorías Sistémicas", id: "sistemicas" },
+  { nombre: "Epistemología de la Ciencia Psicológica", id: "epistemologia" },
+  { nombre: "Cultura y Valores", id: "cultura" },
+  { nombre: "Inglés Básico I", id: "ingles1" },
+  { nombre: "Procesos Neuropsicológicos II", id: "neuro2", requiere: ["neuro1"] },
+  { nombre: "Psicología Social", id: "social" },
+  { nombre: "Psicopatología del Adulto", id: "adulto" },
+  { nombre: "Investigación Cualitativa", id: "cualitativa" },
+  { nombre: "Persona y sentido", id: "sentido" },
+  { nombre: "Inglés Básico II", id: "ingles2" },
+  { nombre: "Evaluación del Desarrollo de Competencias I", id: "evaluacion1" },
+  { nombre: "Políticas Sociales", id: "politicas" },
+  { nombre: "Psicología Comunitaria", id: "comunitaria" },
+  { nombre: "Evaluación Psicológica Cognitiva", id: "cognitiva" },
+  { nombre: "Psicopatología Infanto Juvenil", id: "infanto" },
+  { nombre: "Investigación Cuantitativa", id: "cuantitativa" },
+  { nombre: "Psicología Organizacional y del Trabajo", id: "organizacional" },
+  { nombre: "Psicología Educacional", id: "educacional" },
+  { nombre: "Diagnostico en Psicología Comunitaria", id: "diagcomunitaria" },
+  { nombre: "Evaluación Socioafectiva", id: "socioafectiva" },
+  { nombre: "Estadística para la Psicología", id: "estadistica" },
+  { nombre: "Diagnóstico en Psicología Organizacional", id: "diagorganizacional" },
+  { nombre: "Diagnóstico en Psicología Educacional", id: "diageducacional" },
+  { nombre: "Diagnóstico en Psicología Clinica", id: "diagclinica" },
+  { nombre: "Psicología Clinica y Psicoterapia", id: "psicoterapia" },
+  { nombre: "Electivo 1", id: "electivo1" },
+  { nombre: "Identidad Profesional", id: "identidad" },
+  { nombre: "Evaluación del Desarrollo de Competencias II", id: "evaluacion2" },
+  { nombre: "Intervención Psicológica I", id: "intervencion1" },
+  { nombre: "Proyecto de Investigación en Psicología", id: "proyecto" },
+  { nombre: "Electivo 2", id: "electivo2" },
+  { nombre: "Ética Profesional en Psicología", id: "etica" },
+  { nombre: "Intervención Psicológica II", id: "intervencion2" },
+  { nombre: "Seminario de Investigación en Psicología", id: "seminario" },
+  { nombre: "Electivo 3", id: "electivo3" },
+  { nombre: "Autocuidado", id: "autocuidado" },
+  { nombre: "Práctica Profesional Psicológica", id: "practica" },
+  { nombre: "Examen de Título y Grado", id: "examen" }
 ];
 
 const años = [
   { titulo: "1° Año - Semestre 1", materias: ["fundamentos", "desarrollo1", "antropologia", "comunicacion", "aprendizaje", "conflictos", "autoconocimiento"] },
   { titulo: "1° Año - Semestre 2", materias: ["psicobiologia", "desarrollo2", "cognitivas", "psicoanaliticas", "matematico", "creatividad", "relaciones"] },
+  { titulo: "2° Año - Semestre 3", materias: ["neuro1", "personalidad", "humanistas", "sistemicas", "epistemologia", "cultura", "ingles1"] },
+  { titulo: "2° Año - Semestre 4", materias: ["neuro2", "social", "adulto", "cualitativa", "sentido", "ingles2", "evaluacion1"] },
+  { titulo: "3° Año - Semestre 5", materias: ["politicas", "comunitaria", "cognitiva", "infanto", "cuantitativa", "organizacional"] },
+  { titulo: "3° Año - Semestre 6", materias: ["educacional", "diagcomunitaria", "socioafectiva", "estadistica", "diagorganizacional"] },
+  { titulo: "4° Año - Semestre 7", materias: ["diageducacional", "diagclinica", "psicoterapia", "psicometria", "electivo1", "identidad", "evaluacion2"] },
+  { titulo: "4° Año - Semestre 8", materias: ["intervencion1", "proyecto", "electivo2", "etica"] },
+  { titulo: "5° Año - Semestre 9", materias: ["intervencion2", "seminario", "electivo3", "autocuidado"] },
+  { titulo: "5° Año - Semestre 10", materias: ["practica", "examen"] }
 ];
 
 const progreso = JSON.parse(localStorage.getItem("materiasAprobadas") || "[]");
